@@ -1,18 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import gon from 'gon';
 
-console.log(gon);
-
-const Chat = () => (
+const Chat = ({ channels }) => (
   <ul>
-    {gon.channels.map((channel) => (
-      <li>{channel.name}</li>
+    {channels.map(({ id, name }) => (
+      <li key={id}>{name}</li>
     ))}
   </ul>
 );
 
-ReactDOM.render(
-  <Chat />,
-  document.getElementById('chat'),
-);
+export default Chat;
