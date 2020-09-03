@@ -1,10 +1,37 @@
+// @ts-check
+
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Provider as StoreProvider } from 'react-redux';
+import gon from 'gon';
+import faker from 'faker';
 
-import Chat from './Chat';
+import '../assets/application.scss';
 
-const app = (props, rootElement) => {
-  ReactDOM.render(<Chat {...props} />, rootElement);
+import store, { setupState } from './store';
+import App from './App';
+
+const run = () => {
+
+  if (process.env.NODE_ENV !== 'production') {
+    localStorage.debug = 'chat:*';
+  }
+
+  const username = localStorage.getItem('username') || faker.name.findName();
+  localStorage.setItem('username', username);
+
+  store.dispatch(setupState({ ...gon, username }));
+
+  render(
+    <StoreProvider store={store}>
+      <App />
+    </StoreProvider>,
+    document.getElementById('chat'),
+  );
+
 };
 
-export default app;
+export default run;
