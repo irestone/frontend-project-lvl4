@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useCallback, useState, useMemo,
+  useEffect, useCallback, useState, useMemo, useContext,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -8,34 +8,39 @@ import {
 } from 'react-bootstrap';
 import { find } from 'lodash';
 
-import api, { socket } from './api';
-import { selectors, actions } from './store';
+import { useTranslation } from 'react-i18next';
+import api, { socket } from '../api';
+import { selectors, actions } from '../store';
+import Context from '../Context';
 
 // section #####################################################################
 //  COMPONENTS: CHANNEL CRUD DIALOGS
 // #############################################################################
 
 const CreateChannelDialog = ({ onClose, onSubmit }) => {
+  const { t } = useTranslation();
   const { register, handleSubmit } = useForm();
   return (
     <Modal show onHide={onClose}>
-      <Modal.Header>New channel</Modal.Header>
+      <Modal.Header>
+        {t('New channel')}
+      </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Control
             type="text"
             name="name"
-            placeholder="Channel's name"
+            placeholder={t('Channel\'s name')}
             ref={register()}
           />
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-          Create
+          {t('Create')}
         </Button>
         <Button variant="secondary" onClick={onClose}>
-          Cancel
+          {t('Cancel')}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -43,52 +48,57 @@ const CreateChannelDialog = ({ onClose, onSubmit }) => {
 };
 
 const RenameChannelDialog = ({ onClose, onSubmit, channel }) => {
+  const { t } = useTranslation();
   const { register, handleSubmit } = useForm({ defaultValues: channel || {} });
   return (
     <Modal show onHide={onClose}>
-      <Modal.Header>Rename the channel</Modal.Header>
+      <Modal.Header>
+        {t('Rename the channel')}
+      </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Control
             type="text"
             name="name"
-            placeholder="Channel's name"
+            placeholder={t('Channel\'s name')}
             ref={register()}
           />
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-          Save
+          {t('Save')}
         </Button>
         <Button variant="secondary" onClick={onClose}>
-          Cancel
+          {t('Cancel')}
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-const RemoveChannelDialog = ({ onClose, onConfirm, channel }) => (
-  <Modal show onHide={onClose}>
-    <Modal.Header>Remove the channel</Modal.Header>
-    <Modal.Body>
-      Are you sure you want to remove
-      {' '}
-      «
-      {channel.name}
-      » channel?
-    </Modal.Body>
-    <Modal.Footer>
-      <Button variant="primary" onClick={onConfirm}>
-        Remove
-      </Button>
-      <Button variant="secondary" onClick={onClose}>
-        Cancel
-      </Button>
-    </Modal.Footer>
-  </Modal>
-);
+const RemoveChannelDialog = ({ onClose, onConfirm, channel }) => {
+  const { t } = useTranslation();
+  const { name } = channel;
+  return (
+    <Modal show onHide={onClose}>
+      <Modal.Header>
+        {t('Remove the channel')}
+      </Modal.Header>
+      <Modal.Body>
+        {t('confirmToRemove', { name })}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={onConfirm}>
+          {t('Remove')}
+        </Button>
+        <Button variant="secondary" onClick={onClose}>
+          {t('Cancel')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 // section #####################################################################
 //  COMPONENT: CHAT FORM
@@ -114,6 +124,7 @@ const ChatForm = ({ onSubmit }) => {
 
 const App = () => {
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // part ================================
@@ -121,7 +132,7 @@ const App = () => {
   // =====================================
 
   const currentChannelId = useSelector((state) => state.app.currentChannelId);
-  const username = useSelector((state) => state.app.username);
+  const { username } = useContext(Context);
 
   const channelEntities = useSelector((state) => state.channels.entities);
   const channels = useMemo(() => {
@@ -206,7 +217,9 @@ const App = () => {
       <Row className="h-100 pb-3">
         <Col xs={3} className="border-right">
           <div className="d-flex mb-2">
-            <span>Channels</span>
+            <span>
+              {t('Channels')}
+            </span>
             <Button
               variant="link"
               className="btn-link p-0 ml-auto"

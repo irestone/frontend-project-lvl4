@@ -20,14 +20,10 @@ const appSlice = createSlice({
   name: 'app',
   initialState: {
     currentChannelId: null,
-    username: null,
   },
   reducers: {
     setCurrentChannelId: (state, { payload: { currentChannelId } }) => {
       state.currentChannelId = currentChannelId;
-    },
-    setUsername: (state, { payload: { username } }) => {
-      state.username = username;
     },
   },
 });
@@ -122,9 +118,7 @@ const setupState = ({
   channels,
   currentChannelId,
   messages,
-  username,
 }) => (dispatch) => {
-  dispatch(actions.app.setUsername({ username }));
   dispatch(actions.app.setCurrentChannelId({ currentChannelId }));
   dispatch(actions.channels.set({ channels }));
   dispatch(actions.messages.set({ messages }));

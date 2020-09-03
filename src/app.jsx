@@ -1,33 +1,44 @@
 // @ts-check
 
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider as StoreProvider } from 'react-redux';
 import gon from 'gon';
 import faker from 'faker';
-
-import '../assets/application.scss';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 import store, { setupState } from './store';
-import App from './App';
+import Context from './Context';
+import { en, ru } from './locales';
+
+import App from './app/App';
 
 const run = () => {
 
-  if (process.env.NODE_ENV !== 'production') {
-    localStorage.debug = 'chat:*';
-  }
+  store.dispatch(setupState(gon));
 
   const username = localStorage.getItem('username') || faker.name.findName();
   localStorage.setItem('username', username);
 
-  store.dispatch(setupState({ ...gon, username }));
+  const context = { username };
+
+  i18n
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+      resources: { en, ru },
+      fallbackLng: 'ru',
+      interpolation: { escapeValue: false },
+      debug: true,
+    });
 
   render(
     <StoreProvider store={store}>
-      <App />
+      <Context.Provider value={context}>
+        <App />
+      </Context.Provider>
     </StoreProvider>,
     document.getElementById('chat'),
   );
