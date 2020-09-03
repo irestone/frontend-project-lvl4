@@ -34,7 +34,9 @@ const CreateChannelDialog = ({ onClose, onSubmit }) => {
         <Button variant="primary" onClick={handleSubmit(onSubmit)}>
           Create
         </Button>
-        <Button variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -50,14 +52,18 @@ const RenameChannelDialog = ({ onClose, onSubmit, channel }) => {
           <Form.Control
             type="text"
             name="name"
-            placeholder="Channel name"
+            placeholder="Channel's name"
             ref={register()}
           />
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSubmit(onSubmit)}>Save</Button>
-        <Button variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button variant="primary" onClick={handleSubmit(onSubmit)}>
+          Save
+        </Button>
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -74,8 +80,12 @@ const RemoveChannelDialog = ({ onClose, onConfirm, channel }) => (
       » channel?
     </Modal.Body>
     <Modal.Footer>
-      <Button variant="primary" onClick={onConfirm}>Remove</Button>
-      <Button variant="secondary" onClick={onClose}>Cancel</Button>
+      <Button variant="primary" onClick={onConfirm}>
+        Remove
+      </Button>
+      <Button variant="secondary" onClick={onClose}>
+        Cancel
+      </Button>
     </Modal.Footer>
   </Modal>
 );
