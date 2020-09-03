@@ -1,4 +1,4 @@
-[![Github Actions Status](https://github.com/hexlet-components/projects-frontend-l4-server/workflows/Node%20CI/badge.svg)](https://github.com/hexlet-components/projects-frontend-l4-server/actions)
+![Node CI](https://github.com/irestone/frontend-project-lvl4/workflows/Node%20CI/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/92e15718e4197f8da373/maintainability)](https://codeclimate.com/github/irestone/frontend-project-lvl4/maintainability)
 
 ## Requirements
 
